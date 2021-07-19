@@ -1,0 +1,16 @@
+export { default as App } from './App';
+export { default as Preloader } from './Preloader';
+export { default as Header } from './Header';
+export { default as Button } from './Button';
+export { default as AddMovie } from './AddMovie';
+export { default as NotFound } from './NotFound';
+export { default as Home } from './Home';
+export { default as Movie } from './Movie';
+export { default as Autorization } from './Autorization';
+export { default as Filter } from './Filter';
+export { default as Movies } from './Movies';
+export { default as Paginator } from './Paginator';
+export { default as MovieCard } from './MovieCard';
+export { default as Select } from './Select';
+export { default as Registration } from './Registration';
+export { default as MovieOverview } from './MovieOverview';
