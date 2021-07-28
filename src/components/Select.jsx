@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { useDispatch, batch } from 'react-redux';
@@ -9,10 +9,10 @@ import ArrowDown from '../images/chevron_down.svg';
 const Select = ({ items, values, actionName, ...rest }) => {
   const [ open, setOpen ] = useState(false);
   const dispatch = useDispatch();
+  const select = useRef(null);
   
   const setSettingsPage = (e) => {
     if (values[actionName] !== (+e.target.dataset.value || e.target.dataset.value)) {
-      setOpen(false);
       batch(() => {
         dispatch(setDefaultFilter());
         dispatch(changeSettingsPage({
@@ -23,14 +23,25 @@ const Select = ({ items, values, actionName, ...rest }) => {
         }));
       });
     }
+
+    setOpen(false);
+  };
+
+  const openSelect = () => {
+    setOpen(!open);
+    select.current.focus();
   };
 
   return (
     <StylesSelect {...rest} isOpen={ open }>
-      <p onClick={() => setOpen(!open)}>
+      <p onClick={ openSelect }>
         { values[actionName] }
       </p>
-      <ul>
+      <ul 
+        ref={ select }
+        tabIndex='0'
+        onBlur={() => setOpen(false)}
+      >
         {items.map(item => (
           <li 
             key={ item } 

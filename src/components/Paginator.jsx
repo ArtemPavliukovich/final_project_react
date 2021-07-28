@@ -49,7 +49,7 @@ const Paginator = ({ page, maxPage, numMovies, pageApi }) => {
               />
             );
           })}
-          {maxPage > COUNT_PAGE && maxPage - page > 1 && <p>{ '...' }</p>}
+          {maxPage > COUNT_PAGE && maxPage - page > 2 && <p>{ '...' }</p>}
           {maxPage > COUNT_PAGE && maxPage - page > 1 && 
             <Page value={ maxPage } onClick={ setPage } />
           }

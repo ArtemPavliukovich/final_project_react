@@ -10,6 +10,7 @@ import { Flex } from '../styles/index';
 import DeleteIcon from '../images/delete.svg';
 import PencilIcon from '../images/pen.svg';
 import { isVoted, setVote, deleteVote } from '../common/voteMovie';
+import { checkLoadImage } from '../common/checkLoadImage';
 import { changeSettingsPage } from '../store/actions';
 import { RATINGS, GENRES_RUS } from '../constants/config';
 
@@ -27,7 +28,11 @@ const Movie = ({ location }) => {
   
   useEffect(() => {
     let isMounted = true;
-    Promise.all([TMDb.getGenres(), Firebase.getOverviews()])
+    Promise.all([
+      TMDb.getGenres(), 
+      Firebase.getOverviews(),
+      checkLoadImage(TMDb.getUrlImageMovie(movie.backdrop_path, 1280))
+    ])
       .then(data => {
         if (isMounted) {
           let adminOverview = null;
@@ -44,19 +49,17 @@ const Movie = ({ location }) => {
             }
           }
 
-          setTimeout(() => {
-            setState(prev => ({
-              ...prev,
-              overview: adminOverview ?? movie.overview,
-              initialOverview: adminOverview ?? movie.overview,
-              genresMovie: genres.map(genre => genre.name)
-            }));
-          }, 50); // нужно для плавности прелодера
+          setState(prev => ({
+            ...prev,
+            overview: adminOverview ?? movie.overview,
+            initialOverview: adminOverview ?? movie.overview,
+            genresMovie: genres.map(genre => genre.name)
+          }));
         }
       });
 
     return (() => isMounted = false);
-  }, [movie.genre_ids, movie.id, movie.overview]);
+  }, [movie.genre_ids, movie.id, movie.overview, movie.backdrop_path]);
 
   const setRate = (e) => {
     if (user) {
